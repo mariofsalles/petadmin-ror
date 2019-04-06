@@ -1,7 +1,10 @@
 class Sell < ApplicationRecord
   include Fae::BaseModelConcern
+  belongs_to :discount
+  belongs_to :client
+  validates :client, presence: true
   enum status: { finished:0, cancelled: 1 }
-
+ 
   def fae_display_field
     id
   end
@@ -10,6 +13,4 @@ class Sell < ApplicationRecord
     order(:id)
   end
   
-  belongs_to :discount
-  belongs_to :client
 end
