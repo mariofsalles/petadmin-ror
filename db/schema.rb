@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_05_152415) do
+ActiveRecord::Schema.define(version: 2019_04_06_103002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "campaign_clients", force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_campaign_clients_on_campaign_id"
+    t.index ["client_id"], name: "index_campaign_clients_on_client_id"
+  end
 
   create_table "campaigns", force: :cascade do |t|
     t.string "title"
@@ -197,6 +206,24 @@ ActiveRecord::Schema.define(version: 2019_04_05_152415) do
     t.index ["supplier_id"], name: "index_products_on_supplier_id"
   end
 
+  create_table "sell_products", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "sell_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_sell_products_on_product_id"
+    t.index ["sell_id"], name: "index_sell_products_on_sell_id"
+  end
+
+  create_table "sell_services", force: :cascade do |t|
+    t.bigint "service_id"
+    t.bigint "sell_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sell_id"], name: "index_sell_services_on_sell_id"
+    t.index ["service_id"], name: "index_sell_services_on_service_id"
+  end
+
   create_table "sells", force: :cascade do |t|
     t.decimal "total"
     t.bigint "discount_id"
@@ -228,7 +255,13 @@ ActiveRecord::Schema.define(version: 2019_04_05_152415) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "campaign_clients", "campaigns"
+  add_foreign_key "campaign_clients", "clients"
   add_foreign_key "products", "suppliers"
+  add_foreign_key "sell_products", "products"
+  add_foreign_key "sell_products", "sells"
+  add_foreign_key "sell_services", "sells"
+  add_foreign_key "sell_services", "services"
   add_foreign_key "sells", "clients"
   add_foreign_key "sells", "discounts"
 end

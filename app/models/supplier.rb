@@ -1,5 +1,6 @@
 class Supplier < ApplicationRecord
   include Fae::BaseModelConcern
+
   validates :name, presence: true
   validates :phone, presence: true
   validates :email,
